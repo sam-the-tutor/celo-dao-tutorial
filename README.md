@@ -1,8 +1,23 @@
 # Build Your Own Full Stack DAO On the Celo Blockchain
-
+### Table Of Contents
+- [Build Your Own Full Stack DAO On the Celo Blockchain](#build-your-own-full-stack-dao-on-the-celo-blockchain)
+  - [Introduction](#introduction)
+    - [Table Of Contents](#table-of-contents)
+  - [Prerequisites](#prerequisites)
+  - [Requirements](#requirements)
+  - [Smart Contract](#smartcontract)
+    - [Breakdown of the Smart Contract](#break-down-of-smart-contract)
+  - [Deployment](#deployment)
+  - [Frontend](#frontend)
+    - [App.js](#appjs)
+    - [Breakdown of App.js](#break-down)
+  - [Conclusion](#conclusion)
+  
 ## Introduction
 
-A DAO is a decentralized autonomous organization made possible by the blockchain. They are built and sustained by a community of individuals who are personally invested in it, and power it through a consensus voting mechanism. In this tutorial, I will show you how to build a DAO contract in Solidity. We will walk through the implementation of a simple DAO that enables members to propose and vote on proposals and execute the proposals once they have been approved. We will cover the essential aspects of a DAO, such as the structure of the smart contract, the functions for adding and removing members, creating and voting on proposals, and executing the approved proposals. By the end of this tutorial, you will have a solid understanding of how a DAO works.
+A DAO is a decentralized autonomous organization made possible by the blockchain. They are built and sustained by a community of individuals who are personally invested in it, and power it through a consensus voting mechanism. In this tutorial, I will show you how to build a DAO contract in Solidity. We will walk through the implementation of a simple DAO that enables members to propose and vote on proposals and execute the proposals once they have been approved. 
+
+We will cover the essential aspects of a DAO, such as the structure of the smart contract, the functions for adding and removing members, creating and voting on proposals, and executing the approved proposals. By the end of this tutorial, you will have a solid understanding of how a DAO works.
 
 Here’s a demo [link](https://rococo-malabi-21a086.netlify.app/) of what you’ll be creating.
 
@@ -12,23 +27,23 @@ And a screenshot.
 
 ## Prerequisites
 
-- Solidity.
-- React.
+- Prior knowledge on [Solidity](https://soliditylang.org/).
+- Prior knowledge on [React](https://reactjs.org/).
 
 ## Requirements
 
 - Solidity.
 - React.
-- Bootstrap.
-- NodeJS 12.0.1 upwards installed.
-- Celo Extension Wallet.
-- Remix IDE
+- [Bootstrap](https://getbootstrap.com/).
+- [NodeJS](https://nodejs.org/) 12.0.1 upwards installed.
+- [Celo Extension Wallet](https://chrome.google.com/webstore/detail/celoextensionwallet/kkilomkmpmkbdnfelcpgckmpcaemjcdh?hl=en).
+- [Remix IDE](https://remix.ethereum.org/)
 
 ## SmartContract
 
 Let's begin writing our smart contract in Remix IDE
 
-The completed code Should look like this.
+The completed code should look like this.
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -148,7 +163,7 @@ contract CELODAO {
 
 ```
 
-### Break down
+### Break down of smart contract
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -156,7 +171,7 @@ pragma solidity ^0.8.0;
 
 ```
 
-First, we declared our license and the solidity version.
+First, we declare our license and the Solidity version.
 
 ```solidity
 contract CELODAO {
@@ -185,7 +200,7 @@ Finally, we declare a public mapping called `members` that maps an address to a 
     event ProposalVoted(uint256 indexed proposalId, address indexed voter, bool vote);
 ```
 
-Here we declare several events that will be emitted when certain actions are taken in the DAO. These events can be listened to by external applications to track the state of our DAO.
+Here, we declare several events that will be emitted when certain actions are taken in the DAO. These events can be listened to by external applications to track the state of our DAO.
 
 ```solidity
  struct Proposal {
@@ -207,11 +222,11 @@ Here we declare several events that will be emitted when certain actions are tak
 
 ```
 
-In this section, we declares a new struct called `Proposal` that will be used to store information about each proposal. It contains several fields, including the ID of the proposal, the address of the proposer, a description of the proposal, the number of yes votes, the number of no votes, a mapping of each member's vote, and a flag to indicate whether the proposal has been executed.
+In this section, we declare a new struct called `Proposal` that will be used to store information about each proposal. It contains several fields, including the ID of the proposal, the address of the proposer, a description of the proposal, the number of yes votes, the number of no votes, a mapping of each member's vote, and a flag to indicate whether the proposal has been executed.
 
-We also declare a public mapping called proposals that maps a proposal ID to a Proposal struct. proposalCount will keep track of the total number of proposals in our DAO.
+We also declare a public mapping called `proposals` that maps a proposal ID to a `Proposal` struct. `proposalCount` will keep track of the total number of proposals in our DAO.
 
-Lastly, we added a constructor function for the CELODAO contract. It sets the owner state variable to the address of the contract creator.
+Lastly, we declare a constructor function for the CELODAO contract. It sets the owner state variable to the address of the contract creator.
 
 ```solidity
   function addMember(address _address, uint256 _votingPower) public {
@@ -225,7 +240,15 @@ Lastly, we added a constructor function for the CELODAO contract. It sets the ow
 
 ```
 
-Next we add a new function called `addMember` this function adds a new member to our DAO contract. It takes two arguments `_address`, which is the address of the new member, and `_votingPower`, which is the voting power of the new member. The function first checks to make sure that the caller of the function is the contract owner, and that the given \_address is not already a member. It then increases the member count, creates a new MemberInfo struct for the new member, and adds it to the members mapping using the_address as the key. Finally, it emits a NewMember event with the new member's address and voting power.
+Next, we add a new function `addMember` which adds a new member to our DAO contract. It takes in two arguments;
+- `_address`: the address of the new member.
+- `_votingPower`: the voting power of the new member. 
+
+The function first checks that the;
+-  caller of the function is the contract owner.
+- given `_address` is not already a member. 
+
+It then increases the member count, creates a new `MemberInfo` struct for the new member, and adds it to the members mapping using the `_address` as the key and finally emits a `NewMember` event with the new member's address and voting power as parameters.
 
 ```solidity
  function removeMember(address _address) public {
@@ -238,7 +261,15 @@ Next we add a new function called `addMember` this function adds a new member to
     }
 ```
 
-Next we add a function `removeMember` This function removes a member from our DAO. It takes one argument `_address`, which is the address of the member to be removed. The function first checks that the caller of the function is the contract owner, that the given \_address is actually a member, and that the member does not have an active proposal. It then sets the member's `memberAddress` to `address(0)`, decreases the `memberCount`, and emits a `MemberRemoved` event with the removed member's address.
+Next, we add a function `removeMember` to removes a member from our DAO. It takes one argument; 
+- `_address` :  the address of the member to be removed. 
+
+The function first checks that the;
+* caller of the function is the contract owner.
+* given `_address` is actually a member.
+* member does not have an active proposal. 
+
+It then sets the member's `memberAddress` to `address(0)`, decreases the `memberCount`, and emits a `MemberRemoved` event with the removed member's address.
 
 ```solidity
 function createProposal(string memory _description) public {
@@ -254,13 +285,18 @@ function createProposal(string memory _description) public {
     }
 ```
 
-Now lets look at the `createProposal` function. This function creates a new proposal in our DAO. It takes one argument `_description`, which is a string containing a description of the proposal.
+Now, lets declare the `createProposal` function to create a new proposal in our DAO. It takes one argument;
+* `_description` :  the string containing a description of the proposal.
 
-The function first creates a reference to the Proposal struct at index `proposalCount` in the proposals array using the storage keyword. It then sets the `proposalId` to the value of `proposalCount`, the proposer to the address of the caller, the description to the provided description, and sets the initial `yesVotes` and `noVotes` to 0.
-
-Finally, it sets the executed flag to false, indicating that the proposal has not been executed yet.
-
-At the end of the function, the `proposalCount` is incremented, and the new proposal is added to the proposals array.
+The function does the following;
+* creates a reference to the Proposal struct at index `proposalCount` in the proposals array using the storage keyword.
+* sets the `proposalId` to the value of `proposalCount`, 
+* the `proposer` to the address of the caller, 
+* the `description` to the provided description.
+* sets the initial `yesVotes` and `noVotes` to 0.
+* sets `the executed` flag to false, indicating that the proposal has not been executed yet.
+* increases the `proposalCount`.
+Finally, the function emits the `proposalCreated` event.
 
 ```solidity
  function getProposal(uint _index) public view returns(
@@ -283,9 +319,8 @@ At the end of the function, the `proposalCount` is incremented, and the new prop
     }
 ```
 
-The next function is the `getProposal()`. This function is a view function that takes an \_index parameter and returns a tuple containing the various properties of a proposal: `proposalId`, `proposer`, `description`, `yesVotes`, `noVotes`, and `executed`.
+Next, we declare the `getProposal` function. It is public and of type `view`.  The function takes in `_index` as a parameter and returns a tuple containing the various properties of a proposal: `proposalId`, `proposer`, `description`, `yesVotes`, `noVotes`, and `executed`.
 
-It creates a `Proposal` object with the corresponding `_index` and returns the properties of the proposal as a tuple.
 
 ```solidity
    function vote(uint256 _proposalId, bool _vote) public {
@@ -302,11 +337,13 @@ It creates a `Proposal` object with the corresponding `_index` and returns the p
     }
 ```
 
-Next we create a function `vote()`. The vote function allows a member to vote on a proposal. The function takes two arguments `_proposalId` is the ID of the proposal being voted on, and `_vote` is a boolean indicating whether the member is voting in favor or against the proposal.
+Next, we create the`vote` function which allows a member to vote on a proposal. The function takes in two arguments;
+* `_proposalId` : the ID of the proposal being voted on,
+* `_vote` : a boolean indicating whether the member is voting  against or in favor of the proposal.
 
-The first require statement checks if the member has not already voted on the proposal. If the member has already voted, the function will fail with an error message.
+The first require statement ensures that the member has not voted on the proposal. Otherwise, the function will fail with an error message.
 
-The second require statement checks if the proposal has not already been executed. If the proposal has already been executed, the function will fail with an error message.
+The second require statement ensures that the proposal has not already been executed. Otherwise, the function will fail with an error message.
 
 The `proposals[_proposalId].votes[msg.sender] = _vote` line records the member's vote in the votes mapping of the proposal. The votes mapping stores a boolean value indicating whether a member has voted on the proposal or not. If the member is voting in favor of the proposal, their yesVotes count is incremented by their voting power. If they are voting against the proposal, their noVotes count is incremented by their voting power.
 
@@ -323,7 +360,12 @@ function executeProposal(uint256 _proposalId) public {
     }
 ```
 
-The `executeProposal()` is a function that allows the proposer of a proposal to execute it. The function first checks that the proposer is the one calling the function, that the proposal has not been executed yet, and that the number of "yes" votes is greater than the number of "no" votes. If all of these conditions are met, the function sets the executed flag to true, indicating that the proposal has been executed. Finally, any actions described in the proposal can be performed.
+Next, we delcare the `executeProposal()` function which allows the proposer of a proposal to execute it. The function first checks that the;
+* proposer is the one calling the function,
+* proposal has not been executed yet,
+* number of "yes" votes is greater than the number of "no" votes. 
+
+If all of these conditions are met, the function sets the `executed` flag to true, indicating that the proposal has been executed. Any actions described in the proposal can now be performed.
 
 ```solidity
  function getProposalsLength() public view returns(uint){
@@ -331,9 +373,10 @@ The `executeProposal()` is a function that allows the proposer of a proposal to 
     }
 ```
 
-Finally, the `getProposalsLength()` is a simple function that returns the number of proposals that have been created in the contract. It simply returns the value of the proposalCount variable.
+Finally, we declare the `getProposalsLength()`function which returns the number of proposals that have been created in the contract. It simply returns the value of the proposalCount variable.
 
 With that, we have gone through all of the code in our DAO Contract. This contract allows members to add and remove other members, create and vote on proposals, and execute proposals that have been approved by the members. It is a basic implementation of a DAO, and it can be extended or modified to suit the needs of a particular use case.
+
 
 ## Deployment
 
@@ -341,7 +384,7 @@ To deploy our smart contract successfully, we need the celo extention wallet whi
 
 Next, we need to fund our newly created wallet which can done using the celo alfojares faucet [Here](https://celo.org/developers/faucet)
 
-You can now fund your wallet and deploy your contract using the celo plugin in remix.
+You can now fund your wallet and deploy your contract using the Celo plugin in Remix IDE.
 
 ## Frontend
 
@@ -535,7 +578,7 @@ import { newKitFromWeb3 } from "@celo/contractkit";
 import celodao from "./contracts/celo-dao.abi.json";
 ```
 
-The first step is to import the necessary components and libraries. We start by importing the Home and Proposals components from the components folder. We then import the `useState`, `useEffect`, and `useCallback` hooks from React, as well as the Web3 library for interacting with the Ethereum blockchain. Lastly, we import the contract ABI (Application Binary Interface) for the Celo-Dao contract from the contracts folder.
+The first step is to import the necessary components and libraries. We start by importing the Home and Proposals components from the components folder. We then import the `useState`, `useEffect`, and `useCallback` hooks from React, as well as the Web3 library for interacting with the Ethereum blockchain. Lastly, we import the contract Application Binary Interface(ABI) for the Celo-Dao contract from the contracts folder.
 
 ```javascript
 const ERC20_DECIMALS = 18;
@@ -577,7 +620,7 @@ const connectToWallet = async () => {
 };
 ```
 
-Next, we created a the `connectToWallet()` function that allows the user to connect to their wallet and sets the address and kit.
+Next, we create the `connectToWallet()` function that allows the user to connect to their wallet and sets the address and kit.
 
 ```javascript
 const getBalance = useCallback(async () => {
@@ -620,7 +663,7 @@ const getProposals = useCallback(async () => {
 }, [contract]);
 ```
 
-The `getProposals()` function is used to get the list of proposals from the contract. We use the getProposalsLength method to get the number of proposals, and loop through each proposal to get its properties. We then store the proposals in the proposals state variable.
+The `getProposals()` function is used to get the list of proposals from the contract. We use the `getProposalsLength` method to get the number of proposals, and loop through each proposal to get its properties. We then store the proposals in the proposals state variable.
 
 ```javascript
 const addProposal = async (_description) => {
@@ -633,7 +676,7 @@ const addProposal = async (_description) => {
 };
 ```
 
-The addProposal function is used to add a proposal to the contract. We use the `createProposal` method to add the proposal, and then call the `getProposals()` function to update the proposals state variable.
+The `addProposal` function is used to add a proposal to the contract. We use the `createProposal` method to add the proposal, and then call the `getProposals()` function to update the proposals state variable.
 
 ```javascript
 const addMember = async (_address, _votingPower) => {
