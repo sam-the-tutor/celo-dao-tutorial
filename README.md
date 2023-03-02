@@ -27,16 +27,14 @@ And a screenshot.
 
 ## Prerequisites
 
-- Prior knowledge on [Solidity](https://soliditylang.org/).
-- Prior knowledge on [React](https://reactjs.org/).
+- Prior knowledge on [Solidity](https://soliditylang.org/)
+- Prior knowledge on [React](https://reactjs.org/)
 
 ## Requirements
 
-- Solidity.
-- React.
-- [Bootstrap](https://getbootstrap.com/).
-- [NodeJS](https://nodejs.org/) 12.0.1 upwards installed.
-- [Celo Extension Wallet](https://chrome.google.com/webstore/detail/celoextensionwallet/kkilomkmpmkbdnfelcpgckmpcaemjcdh?hl=en).
+- [Bootstrap](https://getbootstrap.com/)
+- [NodeJS](https://nodejs.org/) 12.0.1 upwards installed
+- [Celo Extension Wallet](https://chrome.google.com/webstore/detail/celoextensionwallet/kkilomkmpmkbdnfelcpgckmpcaemjcdh?hl=en)
 - [Remix IDE](https://remix.ethereum.org/)
 
 ## SmartContract
@@ -240,13 +238,13 @@ Lastly, we declare a constructor function for the CELODAO contract. It sets the 
 
 ```
 
-Next, we add a new function `addMember` which adds a new member to our DAO contract. It takes in two arguments;
-- `_address`: the address of the new member.
-- `_votingPower`: the voting power of the new member. 
+Next, we add a new function `addMember()` which adds a new member to our DAO contract. It takes in two arguments;
+- `_address`: the address of the new member
+- `_votingPower`: the voting power of the new member 
 
 The function first checks that the;
--  caller of the function is the contract owner.
-- given `_address` is not already a member. 
+-  caller of the function is the contract owner
+- given `_address` is not already a member
 
 It then increases the member count, creates a new `MemberInfo` struct for the new member, and adds it to the members mapping using the `_address` as the key and finally emits a `NewMember` event with the new member's address and voting power as parameters.
 
@@ -261,13 +259,13 @@ It then increases the member count, creates a new `MemberInfo` struct for the ne
     }
 ```
 
-Next, we add a function `removeMember` to removes a member from our DAO. It takes one argument; 
-- `_address` :  the address of the member to be removed. 
+Next, we add a function `removeMember()` to removes a member from our DAO. It takes one argument; 
+- `_address` :  the address of the member to be removed
 
 The function first checks that the;
-* caller of the function is the contract owner.
-* given `_address` is actually a member.
-* member does not have an active proposal. 
+* caller of the function is the contract owner
+* given `_address` is actually a member
+* member does not have an active proposal 
 
 It then sets the member's `memberAddress` to `address(0)`, decreases the `memberCount`, and emits a `MemberRemoved` event with the removed member's address.
 
@@ -285,17 +283,17 @@ function createProposal(string memory _description) public {
     }
 ```
 
-Now, lets declare the `createProposal` function to create a new proposal in our DAO. It takes one argument;
-* `_description` :  the string containing a description of the proposal.
+Now, lets declare the `createProposal()` function to create a new proposal in our DAO. It takes one argument;
+* `_description` :  the string containing a description of the proposal
 
 The function does the following;
-* creates a reference to the Proposal struct at index `proposalCount` in the proposals array using the storage keyword.
-* sets the `proposalId` to the value of `proposalCount`, 
-* the `proposer` to the address of the caller, 
-* the `description` to the provided description.
-* sets the initial `yesVotes` and `noVotes` to 0.
-* sets `the executed` flag to false, indicating that the proposal has not been executed yet.
-* increases the `proposalCount`.
+* creates a reference to the Proposal struct at index `proposalCount` in the proposals array using the storage keyword
+* sets the `proposalId` to the value of `proposalCount`
+* the `proposer` to the address of the caller
+* the `description` to the provided description
+* sets the initial `yesVotes` and `noVotes` to 0
+* sets `the executed` flag to false, indicating that the proposal has not been executed yet
+* increases the `proposalCount`
 Finally, the function emits the `proposalCreated` event.
 
 ```solidity
@@ -319,7 +317,7 @@ Finally, the function emits the `proposalCreated` event.
     }
 ```
 
-Next, we declare the `getProposal` function. It is public and of type `view`.  The function takes in `_index` as a parameter and returns a tuple containing the various properties of a proposal: `proposalId`, `proposer`, `description`, `yesVotes`, `noVotes`, and `executed`.
+Next, we declare the `getProposal()` function. It is public and of type `view`.  The function takes in `_index` as a parameter and returns a tuple containing the various properties of a proposal: `proposalId`, `proposer`, `description`, `yesVotes`, `noVotes`, and `executed`.
 
 
 ```solidity
@@ -337,9 +335,9 @@ Next, we declare the `getProposal` function. It is public and of type `view`.  T
     }
 ```
 
-Next, we create the`vote` function which allows a member to vote on a proposal. The function takes in two arguments;
-* `_proposalId` : the ID of the proposal being voted on,
-* `_vote` : a boolean indicating whether the member is voting  against or in favor of the proposal.
+Next, we create the`vote()` function which allows a member to vote on a proposal. The function takes in two arguments;
+* `_proposalId` : the ID of the proposal being voted on
+* `_vote` : a boolean indicating whether the member is voting  against or in favor of the proposal
 
 The first require statement ensures that the member has not voted on the proposal. Otherwise, the function will fail with an error message.
 
@@ -361,9 +359,9 @@ function executeProposal(uint256 _proposalId) public {
 ```
 
 Next, we delcare the `executeProposal()` function which allows the proposer of a proposal to execute it. The function first checks that the;
-* proposer is the one calling the function,
-* proposal has not been executed yet,
-* number of "yes" votes is greater than the number of "no" votes. 
+* proposer is the one calling the function
+* proposal has not been executed yet
+* number of "yes" votes is greater than the number of "no" votes
 
 If all of these conditions are met, the function sets the `executed` flag to true, indicating that the proposal has been executed. Any actions described in the proposal can now be performed.
 
@@ -388,10 +386,10 @@ You can now fund your wallet and deploy your contract using the Celo plugin in R
 
 ## Frontend
 
-Click on [this](https://github.com/richiemikke/celo-dao-tutorial) repo from your github.
+Click on [this](https://github.com/richiemikke/celo-dao-tutorial) repo from your Github.
 
 - Clone the repo to your computer.
-- open the project from from vscode.
+- Open the project from from vscode.
 - Run `npm install` command to install all the dependencies required to run the app locally.
 
 #### App.js
